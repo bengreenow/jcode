@@ -61,24 +61,11 @@ MCUFRIEND_kbv disp;
 
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 
-// press state
-bool pressed(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t px, int16_t py)
-{
-  if ((px > x1 && px < x2) && (py > y1 && py < y2))
-  {
-    return true;
-  }
-  else
-  {
-    return false;
-  }
-}
-
 // SET BUTTON ARRAYS
 
 // button perams: |label|start X|start Y|width X|height Y|end X|end Y|font|text colour|cursor X|cursor Y|
 
-typedef struct button
+typedef struct Button
 {
   char butLab[16];
   uint16_t topX;
@@ -91,11 +78,12 @@ typedef struct button
   uint16_t texCol;
   int16_t curX;
   int16_t curY;
-} button;
+} Button;
 
-// button list:
+bool wasButtonPressed(Button button, TSPoint p){
+    return (p.x > button.topX && p.x < button.botX) && (p.y > button.topY && p.y < button.botY)}
 
-button butSet[30] =
+Button butSet[30] =
     {
         // label,            start X,  start Y,  size X, size Y, end X,  end Y,  font, text colour,  offset X, offset Y, index
 
@@ -255,7 +243,7 @@ void loop()
       for (i = 13; i < 16; i++)
       {
 
-        if (pressed(butSet[i].topX, butSet[i].topY, butSet[i].botX, butSet[i].botY, p.x, p.y))
+        if (wasButtonPressed(butSet[i], p))
         {
 
           boopFlash();
@@ -302,7 +290,7 @@ void loop()
       for (i = 0; i < 13; i++)
       {
 
-        if (pressed(butSet[i].topX, butSet[i].topY, butSet[i].botX, butSet[i].botY, p.x, p.y))
+        if (wasButtonPressed(butSet[i], p))
         {
 
           boopFlash();
@@ -451,7 +439,7 @@ void loop()
       for (i = 16; i < 22; i++)
       {
 
-        if (pressed(butSet[i].topX, butSet[i].topY, butSet[i].botX, butSet[i].botY, p.x, p.y))
+        if (wasButtonPressed(butSet[i], p))
         {
 
           boopFlash();
@@ -526,7 +514,7 @@ void loop()
       for (i = 0; i < 13; i++)
       {
 
-        if (pressed(butSet[i].topX, butSet[i].topY, butSet[i].botX, butSet[i].botY, p.x, p.y))
+        if (wasButtonPressed(butSet[i], p))
         {
 
           boopFlash();
@@ -679,7 +667,7 @@ void loop()
       for (i = 22; i < 28; i++)
       {
 
-        if (pressed(butSet[i].topX, butSet[i].topY, butSet[i].botX, butSet[i].botY, p.x, p.y))
+        if (wasButtonPressed(butSet[i], p))
         {
 
           boopFlash();
@@ -742,7 +730,7 @@ void loop()
     if (currentPage == '5')
     {
 
-      if (pressed(butSet[28].topX, butSet[28].topY, butSet[28].botX, butSet[28].botY, p.x, p.y))
+      if (wasButtonPressed(butSet[i], p))
       { // return to LED selection
         i = 28;
         boopFlash();
@@ -754,7 +742,7 @@ void loop()
         delay(WAIT);
       }
 
-      if (pressed(butSet[29].topX, butSet[29].topY, butSet[29].botX, butSet[29].botY, p.x, p.y))
+      if (wasButtonPressed(butSet[29], p))
       { // write current colour vals to mem
         i = 29;
         boopFlash();
